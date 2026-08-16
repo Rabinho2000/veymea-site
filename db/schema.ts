@@ -25,6 +25,7 @@ export const leads = sqliteTable("leads", {
   primaryProfile: text("primary_profile").notNull(),
   secondaryProfile: text("secondary_profile"),
   marketingConsent: integer("marketing_consent").notNull().default(0),
-  consentVersion: text("consent_version").notNull(),
+  consentVersion: text("consent_version"),
+  consentAt: text("consent_at"),
   createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });

@@ -139,7 +139,7 @@ Inner gaps: 16–32px between related items, 40–70px between blocks.
 - Max content width: ~1280px for standard content.
 - Hero copy: `min(720px, 58vw)`.
 - Editorial splits: `1fr 1fr` or `1.35fr .65fr`.
-- Sensation grid: 4 columns desktop, 2 columns ≤980px, horizontal scroll ≤650px.
+- Sensation grid: 4 columns desktop, 2 columns ≤980px, 1 column ≤650px.
 - Footer links: 2 columns, ~46% width, right-aligned.
 
 ### Breakpoints

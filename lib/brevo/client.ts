@@ -1,7 +1,7 @@
 import { profiles } from "../../content/quiz/profiles";
 import type { QuizType } from "../quiz/types";
 
-const CONSENT_VERSION = "2026-01-01";
+const CONSENT_VERSION = "v1-2026-08";
 
 export type BrevoConfig = {
   apiKey: string;
@@ -98,8 +98,13 @@ export async function syncLeadWithBrevo(
     brevoRequest(config, "/smtp/email", {
       sender: { name: "Veymea", email: config.senderEmail },
       to: [{ email: lead.email }],
-      subject: `O vosso match Veymea: ${primaryName}`,
-      htmlContent: resultEmailHtml(primaryName, secondaryName, lead.quizType),
+      subject: resultEmailSubject(lead.quizType, primaryName),
+      htmlContent: resultEmailHtml(
+        lead.quizType,
+        primaryName,
+        secondaryName,
+        lead.marketingConsent,
+      ),
     }),
     brevoRequest(config, "/smtp/email", {
       sender: { name: "Veymea Website", email: config.senderEmail },
@@ -110,19 +115,39 @@ export async function syncLeadWithBrevo(
   ]);
 }
 
+function resultEmailSubject(quizType: string, primary: string): string {
+  const prefix = quizType === "couple" ? "O vosso match" : "O teu match";
+  return `${prefix} Veymea: ${primary}`;
+}
+
 function resultEmailHtml(
+  quizType: string,
   primary: string,
   secondary: string,
-  quizType: string,
+  marketingConsent: boolean,
 ): string {
   const subjectLine = quizType === "couple" ? "O vosso match" : "O teu match";
+  const secondaryLine = secondary
+    ? quizType === "couple"
+      ? `<p style="margin:0 0 18px;color:#ead6d2;font-size:15px">O vosso perfil secundário é ${secondary}.</p>`
+      : `<p style="margin:0 0 18px;color:#ead6d2;font-size:15px">O teu perfil secundário é ${secondary}.</p>`
+    : "";
+
+  const consentParagraph = marketingConsent
+    ? quizType === "couple"
+      ? "Guardámos o vosso resultado e avisaremos quando houver novidades preparadas para vocês."
+      : "Guardámos o teu resultado e avisaremos quando houver novidades preparadas para ti."
+    : quizType === "couple"
+      ? "Guardámos o vosso resultado. Se quiserem receber novidades, podem subscrever a qualquer momento."
+      : "Guardámos o teu resultado. Se quiseres receber novidades, podes subscrever a qualquer momento.";
+
   return `
     <div style="background:#1d0b14;padding:42px 20px;font-family:Arial,sans-serif;color:#f8ece8">
       <div style="max-width:560px;margin:auto;background:#321322;border:1px solid #744354;padding:38px">
         <p style="margin:0 0 22px;color:#d99aa3;letter-spacing:3px;text-transform:uppercase;font-size:11px">Veymea</p>
         <h1 style="margin:0 0 18px;font-family:Georgia,serif;font-weight:400;font-size:34px">${subjectLine} é ${primary}.</h1>
-        ${secondary ? `<p style="margin:0 0 18px;color:#ead6d2;font-size:15px">O vosso perfil secundário é ${secondary}.</p>` : ""}
-        <p style="line-height:1.7;color:#ead6d2">Obrigada por fazerem parte dos primeiros passos da Veymea. Guardámos o vosso resultado e avisaremos quando houver novidades preparadas para vocês.</p>
+        ${secondaryLine}
+        <p style="line-height:1.7;color:#ead6d2">${consentParagraph}</p>
         <p style="margin:30px 0 0;color:#c98c98;font-size:12px">Intimacy. Discovery. Connection.</p>
       </div>
     </div>`;

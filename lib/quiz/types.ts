@@ -17,6 +17,7 @@ export type LeadRecord = {
   primaryProfile: VeymeaProfile;
   secondaryProfile: VeymeaProfile | null;
   marketingConsent: boolean;
-  consentVersion: string;
+  consentVersion: string | null;
+  consentAt: string | null;
   createdAt: string;
 };
