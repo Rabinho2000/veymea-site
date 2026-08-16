@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  /* raw palette — do not use directly in components; use semantic tokens */
   --ink: #180b13;
   --plum: #2b1020;
   --plum-2: #40192d;
@@ -10,6 +11,36 @@
   --cream: #f4eadf;
   --paper: #fbf7f1;
   --line: rgba(65, 27, 43, .16);
+
+  /* semantic — backgrounds */
+  --color-bg-primary: var(--paper);
+  --color-bg-dark: var(--plum);
+  --color-bg-darker: var(--ink);
+  --color-bg-soft: var(--cream);
+  --color-bg-footer: #140911;
+
+  /* semantic — text */
+  --color-text-primary: var(--ink);
+  --color-text-on-dark: #ffffff;
+  --color-text-muted: #694b59;
+  --color-text-muted-dark: rgba(255, 255, 255, .68);
+  --color-text-faint-dark: rgba(255, 255, 255, .4);
+
+  /* semantic — accent */
+  --color-accent: var(--rose);
+  --color-accent-soft: var(--blush);
+  --color-accent-warm: var(--powder);
+
+  /* semantic — borders */
+  --color-border: rgba(65, 27, 43, .16);
+  --color-border-dark: rgba(255, 255, 255, .13);
+  --color-border-strong: rgba(255, 255, 255, .52);
+
+  /* motion */
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-micro: 200ms;
+  --dur-small: 400ms;
+  --dur-reveal: 700ms;
 }
 
 * { box-sizing: border-box; }
